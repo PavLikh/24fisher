@@ -9,9 +9,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
-// use App\TestHandlerFactory;
 
-class TestHandler implements RequestHandlerInterface
+class HookPageHandler implements RequestHandlerInterface
 {
     /**
      * @var TemplateRendererInterface
@@ -29,10 +28,10 @@ class TestHandler implements RequestHandlerInterface
     {
         // Do some work...
         // Render and return a response:
-        $data['test'] = $this->config['clientId'];
-        
+
+        $data['query'] = json_encode($request->getQueryParams());
         return new HtmlResponse($this->renderer->render(
-            'app::test-handler',
+            'app::hook-page-handler',
             //[] // parameters to pass to template
             $data
         ));

@@ -14,6 +14,7 @@ return [
     'dependencies' => [
         'factories' => [
             App\Handler\TestHandler::class => App\Factory\TestHandlerFactory::class,
+            App\Handler\HookPageHandler::class => App\Factory\HookPageHandlerFactory::class,
         ],
     ],
 ];
