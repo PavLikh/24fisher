@@ -14,11 +14,7 @@ class CreateTestTable extends Migration
         $db = $container['db'];
         $db::schema()->create('test', function (Blueprint $table) {
             $table->id();
-            $table->integer('contact_id');
-            $table->string('name');
-            $table->string('email');
-            $table->integer('account_id');
-            $table->unique(['email', 'account_id']);
+            $table->json('body');
         });
     }
 

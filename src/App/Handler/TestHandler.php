@@ -28,6 +28,7 @@ class TestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         // Do some work...
+
         // Render and return a response:
         $data['test'] = $this->config['clientId'];
         

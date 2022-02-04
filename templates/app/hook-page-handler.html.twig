@@ -4,7 +4,10 @@
 
 {% block content %}
 	<h1>Hook page</h1>
-	<pre>
-	{{ query }}
-	</pre>
+	
+	{# {{ query }} #}
+	{% for result in query %}
+		<li>{{ result }}</li>
+	{% endfor %}
+	
 {% endblock %}
