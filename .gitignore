@@ -6,3 +6,5 @@
 /vendor/
 /.idea
 info.txt
+.env
+.htaccess
