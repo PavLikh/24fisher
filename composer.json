@@ -57,7 +57,8 @@
         "mezzio/mezzio": "^3.7",
         "mezzio/mezzio-fastroute": "^3.0.3",
         "mezzio/mezzio-helpers": "^5.7",
-        "mezzio/mezzio-twigrenderer": "^2.6"
+        "mezzio/mezzio-twigrenderer": "^2.6",
+        "pimple/pimple": "^3.5"
     },
     "require-dev": {
         "filp/whoops": "^2.7.1",
