@@ -29,7 +29,15 @@ class HookPageHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         // Do some work...
+        $post = $request->getParsedBody();
         $body = $request->getQueryParams();
+        if (!empty($post)) {
+            $body = json_encode($request->getParsedBody());
+            $test = new Test();
+            $test->setAttribute('body', $body);
+            $test->save();   
+        }
+
         if (!empty($body)) {
             $body = json_encode($request->getQueryParams());
             $test = new Test();
