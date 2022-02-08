@@ -29,33 +29,21 @@ class HookPageHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         // Do some work...
-        $post = $request->getParsedBody();
-        $body = $request->getQueryParams();
-        if (!empty($post)) {
+        $body = $request->getParsedBody();
+        $query = $request->getQueryParams();
+        if (!empty($body)) {
             $body = json_encode($request->getParsedBody());
             $test = new Test();
             $test->setAttribute('body', $body);
             $test->save();   
-        }
-
-        if (!empty($body)) {
+        }else if (!empty($query)) {
             $body = json_encode($request->getQueryParams());
             $test = new Test();
             $test->setAttribute('body', $body);
-            $test->save();   
+            $test->save();
         }
-            // $test1 = new Test();
-            // $test = Test::select('body')->get();
-            // $test1 = Test::query()->pluck('id', 'body')->get('body');
-            // $test1 = Test::query()->pluck('body')->all();//work
-      
-            // $test = Test::query()->where('id', '=', 4)->first();//work
-            // $test1 = $test->getAttributeValue('body');
-            // $test1 = $test->getAttribute('body');
 
-            $body = Test::query()->pluck('body', 'id')->all(); //
-            // Test::query()->where("column","=", $accountId)->first();
-
+        $body = Test::query()->pluck('body', 'id')->all(); //
         // echo '<pre>';
         // var_dump($test1);
         // echo '</pre>'; die;

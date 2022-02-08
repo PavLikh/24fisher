@@ -2,12 +2,63 @@
 
 {% block title %}Hook page{% endblock %}
 
+{% block stylesheets %}
+<style>
+	button {
+		border-radius: 4px;
+		background-color: unset;
+		border: none;
+	}
+	button:active, button:focus {
+		outline: none;
+		border: none;
+	}
+
+	.item {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		box-shadow: 1px 1px 3px dimgrey;
+		margin-bottom: 10px;
+	}
+	.user_control {
+		width: 70px;
+		background-color: honeydew;
+		flex-basis: auto;
+		flex-shrink: 0;
+	}
+	.request_demo {
+		background-color: cornsilk;
+		flex-grow: 1;
+	}
+
+	button.delete{
+		background-color: crimson;
+		color: azure;
+	}
+
+	button.delete:hover {
+		box-shadow: 1px 1px 1px dimgrey;
+		color: snow;
+	}
+	button.delete:active {
+		box-shadow: inset 1px 1px dimgrey;
+	}
+
+</style>
+{% endblock %}
+
 {% block content %}
+
 	<h1>Hook page</h1>
 	
 	{# {{ query }} #}
 	{% for result in query %}
-		<li>{{ result }}</li>
+		<div class="item">
+			<div class="user_control"><button class="delete">del</button></div>
+			<div class="request_demo">{{ result }}</div>
+		</div>
 	{% endfor %}
 	
 {% endblock %}
