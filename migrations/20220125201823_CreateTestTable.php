@@ -15,6 +15,7 @@ class CreateTestTable extends Migration
         $db::schema()->create('test', function (Blueprint $table) {
             $table->id();
             $table->json('body');
+            $table->string('method', 50);
         });
     }
 
