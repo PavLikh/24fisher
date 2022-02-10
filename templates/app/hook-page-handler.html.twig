@@ -55,8 +55,8 @@
 	
 	{# {{ query }} #}
 	{% for one_query in query %}
-		<div class="item">
-				<div class="user_control"><button class="delete">del</button></div>
+		<div class="item" id="{{ one_query['id'] }}">
+				<div class="user_control"><button onclick="" class="delete">del</button><p>id: {{ one_query['id'] }}</p></div>
 				<div class="request_demo">
 					<p>Method: {{ one_query['method'] }}</p>
 					{{ one_query['body'] }}
@@ -64,4 +64,31 @@
 		</div>
 	{% endfor %}
 	
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+ 		// $(document).ready(function(){
+ 		// 	alert(jQuery.fn.jquery);
+ 		// });
+
+		$(".delete").on('click', function(){
+		
+			var item  = $(this).parent().parent();
+			var id = item.attr('id');
+			$.ajax({
+				url: '/query/delone',         /* Куда пойдет запрос */
+				method: 'post',             /* Метод передачи (post или get) */
+				dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+				data: {id: id},     /* Параметры передаваемые в запросе. */
+				success: function(response){
+					var a = JSON.parse(JSON.stringify(response));
+					if (a.action) {
+						item.remove();
+						console.log(a);
+					}
+				}
+        	});
+    	});
+ 	</script>
 {% endblock %}

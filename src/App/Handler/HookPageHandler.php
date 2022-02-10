@@ -51,26 +51,13 @@ class HookPageHandler implements RequestHandlerInterface
             $test->save();
         }
 
-        // $body = $request->getParsedBody();
-        // $query = $request->getQueryParams();
-        // if (!empty($body)) {
-        //     $body = json_encode($request->getParsedBody());
-        //     $test = new Test();
-        //     $test->setAttribute('body', $body);
-        //     $test->save();   
-        // }else if (!empty($query)) {
-        //     $body = json_encode($request->getQueryParams());
-        //     $test = new Test();
-        //     $test->setAttribute('body', $body);
-        //     $test->save();
-        // }
-
         // $body = Test::query()->pluck('body', 'id')->all(); //
-        $query = Test::select('body', 'method')->orderBy('id', 'DESC')->get()->toArray(); //
+        // $query = Test::select('body', 'method')->orderBy('id', 'DESC')->get()->toArray(); //
+        $query = Test::select()->orderBy('id', 'DESC')->get()->toArray(); //
         // $body = Test::query()->latest()->get()->toArray(); // there is no created_at column in table
         // $query = Test::all('body', 'method')->toArray(); //
         // echo '<pre>';
-        // var_dump($body);
+        // var_dump($query);
         // echo '</pre>'; die;
         $data['query'] = $query; 
         // Render and return a response:

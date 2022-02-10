@@ -42,4 +42,6 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
     $app->get('/test', App\Handler\TestHandler::class, 'test');
     $app->any('/hook', App\Handler\HookPageHandler::class, 'hook');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
+    $app->get('/query/{action}', App\Handler\QueryHandler::class, 'query.action');
+    $app->post('/query/{action}', App\Handler\QueryHandler::class);
 };
