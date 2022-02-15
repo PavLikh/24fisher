@@ -16,6 +16,8 @@ class CreateTestTable extends Migration
             $table->id();
             $table->json('body');
             $table->string('method', 50);
+            $table->string('userAgent');
+            $table->dateTime('dateTime');
         });
     }
 

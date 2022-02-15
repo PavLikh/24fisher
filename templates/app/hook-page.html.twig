@@ -1,0 +1,302 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Hook page{% endblock %}
+
+{% block stylesheets %}
+<style>
+	button {
+		border-radius: 4px;
+		background-color: unset;
+		border: none;
+	}
+
+	button:active, button:focus {
+		outline: none;
+		border: none;
+	}
+
+	.hook_wraper {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+	}
+
+	.query_list	{
+		background-color: yellow;
+		width: 300px;
+		float: left;
+		padding-right: 10px;
+		padding-top: 10px;
+		border-right: 1px dotted black;
+		flex-basis: auto;
+		flex-shrink: 0;
+		flex-grow: 1;
+	}
+
+	.query_detail {
+		flex-grow: 2;
+		/*background-color: blue;*/
+		background-color: yellow;
+		padding-left: 10px;
+		padding-top: 10px;
+		/*flex-shrink: 0.5;*/
+	}
+
+	.query_detail_content{
+
+	}
+
+	.item {
+		display: flex;
+		height: 100px;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		box-shadow: 1px 1px 3px dimgrey;
+		margin-bottom: 10px;
+		border-top-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+	.item .query_detail_content {
+		display: none;
+	}
+
+	.query_body{
+		background-color: green;
+	}
+
+	.active {
+		/*border-top-left-radius: 4px;*/
+		/*border-bottom-right-radius: 35px;*/
+		/*border-left:;*/
+		outline: 2px ridge silver;
+
+		/*box-shadow: -5px 0px 0px 0px black, 5px 0px 0px 10px dimgrey;*/
+		box-shadow: 14px 0px 14px 2px dimgrey;
+	}
+
+	.item:hover {
+		box-shadow: 2px 2px 10px #1d3030;
+	}
+	.active:hover {
+		box-shadow: -4px 0px 8px 2px dimgrey, 14px 0px 14px 2px dimgrey;
+		outline: 3px ridge silver;
+	}
+
+
+	.user_control {
+		width: 70px;
+		background-color: honeydew;
+		flex-basis: auto;
+		flex-shrink: 0;
+		padding: 5px;
+		border-top-left-radius: 5px;
+	}
+	.request_demo {
+		background-color: cornsilk;
+		flex-grow: 1;
+		overflow: hidden;
+		border-bottom-right-radius: 5px;
+	}
+
+	button.delete{
+		background-color: crimson;
+		color: azure;
+	}
+
+	button.delete:hover {
+		box-shadow: 1px 1px 1px dimgrey;
+		color: snow;
+	}
+	button.delete:active {
+		box-shadow: inset 1px 1px dimgrey;
+	}
+
+	.query_detail_content .headers {
+		background-color: blue;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+		overflow: hidden;
+		padding: 5px;
+	}
+
+	.query_detail_content .headers th {
+		background-color: maroon;
+		min-width: 100px;
+		height: 30px;
+	}
+
+	.query_detail_content .headers td {
+		background-color: cornsilk;
+	}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+	<h1>Hook page</h1>
+	<div class="hook_wraper">
+		<div class="query_list">
+			<div class="item active" id="">
+				<div class="user_control"><button onclick="" class="delete">del</button><p>id: 23</p></div>
+				<div class="request_demo">
+					<h3>Method: POST</h3>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, iusto cum dolores impedit nesciunt, numquam, voluptatem modi maiores nostrum architecto odit consectetur. Ipsum possimus cum quaerat nam dignissimos soluta debitis?
+				</div>
+			</div>
+			{% set lastIndex = 0 %}
+
+			{% for one_query in query %}
+
+				{% set lastIndex = loop.index0 %}
+				<div class="item" id="{{ one_query['id'] }}" data-index="{{ loop.index0 }}">
+					<div class="user_control"><button onclick="" class="delete">del</button>
+						<p>{{ loop.index0 }}</p>
+						<p>{{ one_query['method'] }}</p>
+						<p>id: {{ one_query['id'] }}</p>
+						{% include '@app/detail-query.html.twig' with {'data': one_query,'itt': loop.index0} %}
+					</div>
+					<div class="request_demo">
+						<h3>Method: {{ one_query['method'] }}</h3>
+						<p>id: {{ one_query['id'] }}</p>
+						<p>Date: {{ one_query['dateTime'] }}</p>
+					</div>
+						{% include '@app/detail-query.html.twig' with {'data': one_query} %}
+				</div>
+			{% endfor %}
+		</div>
+		{% set a = {'s': lastIndex} %}
+		<div class="query_detail">
+			<div class="query_detail_content">
+				<div class="requestDetails">
+					<h4>Request detail</h4>
+					<table>
+						<tr>
+							<th>Method: </th>
+							{% set a1 = 1 %}
+							<td class="test">POST{{ query[0].body }}</td>
+						</tr>
+						<tr>
+							<th>user-agent:</th>
+							<td>{{ query[0].userAgent }}</td>
+						</tr>
+						<tr>
+							<th>host:</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Date:</th>
+							<td>{{ query[0].dateTime }}</td>
+						</tr>
+					</table>
+				</div>
+				<div class="headers">
+					<h4>Headers</h4>
+					<table>
+						<tr>
+							<th>Method: </th>
+							{% set a1 = 1 %}
+							<td class="test">POST{{ query[0].body }}</td>
+						</tr>
+						<tr>
+							<th>user-agent:</th>
+							<td>{{ query[0].userAgent }}</td>
+						</tr>
+						<tr>
+							<th>host:</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Date:</th>
+							<td>{{ query[0].dateTime }}</td>
+						</tr>
+					</table>
+				</div>
+				<div class="query_body">
+					<h4>Body</h4>
+					<table>
+						<tr>
+							<th>body: </th>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+ 		// $(document).ready(function(){
+ 		// 	alert(jQuery.fn.jquery);
+ 		// });
+
+{#	{% for i, one_query in query %}#}
+{#		{% for j, value in one_query %}#}
+{#		{% if j == 'id' %}#}
+{#    		array[{{ i }}][{{ j }}] = {{ value|raw }};#}
+{#		{% else %}#}
+{#			array[{{ i }}][{{ j }}] = '{{ value|raw }}';#}
+{#		{% endif %}#}
+
+{#		{% endfor %}#}
+{#	{% endfor %}#}
+	let index = 0;
+	while (index < $('.lastIndex').data('last-index'))
+	{
+    	console.log(index);
+    	index++;
+	}
+	// $(".item").data(index);
+	$(".item").on('click', function() {
+		$(".active").removeClass('active');
+		$(this).addClass('active');
+
+		var id = $(this).attr('id');
+		$(this).append('<b test="">	{% set a1 = 1 %}</b>');
+		$('.test').empty().append("<b>{{ query[a1].id }}</b>");
+		$.ajax({
+    		url: '/query/showone',
+    		method: 'post',
+    		dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+    		data: {id: id},     /* Параметры передаваемые в запросе. */
+    		success: function(response){
+        		var a = JSON.parse(JSON.stringify(response));
+        		if (a.action) {
+            		alert($(this).data('index'));
+            		console.log(a);
+        		}
+    		}
+		});
+		$('.query_detail').empty();
+		$(this).children('.query_detail_content').clone().appendTo('.query_detail');
+	});
+
+
+	$(".delete").on('click', function(){
+
+		var item  = $(this).parent().parent();
+		var id = item.attr('id');
+		$.ajax({
+			url: '/query/delone',         /* Куда пойдет запрос */
+			method: 'post',             /* Метод передачи (post или get) */
+			dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+			data: {id: id},     /* Параметры передаваемые в запросе. */
+			success: function(response){
+			var a = JSON.parse(JSON.stringify(response));
+				if (a.action) {
+   					item.remove();
+    				console.log(a);
+				}
+			}
+		});
+	});
+</script>
+{% endblock %}

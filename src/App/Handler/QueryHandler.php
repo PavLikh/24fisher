@@ -24,7 +24,10 @@ class QueryHandler implements RequestHandlerInterface
     			$itemId = $request->getParsedBody()['id'];
     			return new JsonResponse(['action' => $this->deleteOne($itemId)]);
     			break;
-    		
+            case 'showone':
+                $itemId = $request->getParsedBody()['id'];
+                return new JsonResponse(['action' => $this->getOne($itemId)]);
+                break;
     		default:
     			# code...
     			break;
@@ -40,7 +43,15 @@ class QueryHandler implements RequestHandlerInterface
     	if(Test::query()->where("id","=", $itemId)->exists()) {
     		$result = Test::query()->where("id","=", $itemId)->first()->delete();
     	}
-    		
     	return $result;
+    }
+
+    private function getOne($itemId)
+    {
+        $result = false;
+        if(Test::query()->where("id","=", $itemId)->exists()) {
+            $result = Test::query()->where("id","=", $itemId)->first();
+        }
+        return $result;
     }
 }

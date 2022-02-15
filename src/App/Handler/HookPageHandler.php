@@ -12,6 +12,8 @@ use Mezzio\Template\TemplateRendererInterface;
 use App\Model\Test;
 use Illuminate\Database\Eloquent\Collection;
 
+use function time;
+
 class HookPageHandler implements RequestHandlerInterface
 {
     /**
@@ -32,8 +34,15 @@ class HookPageHandler implements RequestHandlerInterface
         // getUri()
         // getHeaders()
         // Do some work...
-        // echo '<pre>';
-            // var_dump($request->getMethod());
+//        var_dump($request->getHeaderLine('host'));
+//        var_dump($request->getHeaderLine('host1'));
+//        var_dump($request->getHeader(['host', 'accept-encoding']));
+//        echo '<pre>';
+//        var_dump($request->getHeaders());
+//die;
+//        var_dump(date('r')); die;
+//        $request->getBody(); die;
+//        var_dump($request->); die;
 
     
         // echo '</pre>'; die;
@@ -48,6 +57,8 @@ class HookPageHandler implements RequestHandlerInterface
             $test = new Test();
             $test->setAttribute('body', $body);
             $test->setAttribute('method', $request->getMethod());
+            $test->setAttribute('dateTime', date('Y-m-d H:m:s'));
+            $test->setAttribute('userAgent', $request->getHeaderLine('user-agent') );
             $test->save();
         }
 
@@ -59,13 +70,14 @@ class HookPageHandler implements RequestHandlerInterface
         // echo '<pre>';
         // var_dump($query);
         // echo '</pre>'; die;
-        $data['query'] = $query; 
+        $data['query'] = $query;
+        $data['index'] = 0;
         // Render and return a response:
 
         // $data['query'] = json_encode($request->getQueryParams());
         
         return new HtmlResponse($this->renderer->render(
-            'app::hook-page-handler',
+            'app::hook-page',
             //[] // parameters to pass to template
             $data
         ));

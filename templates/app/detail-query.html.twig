@@ -1,0 +1,50 @@
+<h2 style="display: none">Detail-query</h2>
+<div class="query_detail_content">
+    <div class="requestDetails">
+        <h4>Request detail</h4>
+        <table>
+            <tr>
+                <th>Method: </th>
+                <td>{{ data.method }}</td>
+            </tr>
+            <tr>
+                <th>user-agent:</th>
+                <td>{{ data.userAgent }}</td>
+            </tr>
+            <tr>
+                <th>host:</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Date:</th>
+                <td>{{ data.dateTime }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="headers">
+        <h4>Headers</h4>
+        <table>
+            <tr>
+                <th>Method: </th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>user-agent:</th>
+                <td>{{ data.userAgent }}</td>
+            </tr>
+            <tr>
+                <th>host:</th>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div class="query_body">
+        <h4>Body</h4>
+        <table>
+            <tr>
+                <th>body: </th>
+                <td>{{ data.body }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
