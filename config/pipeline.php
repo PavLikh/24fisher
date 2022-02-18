@@ -14,7 +14,7 @@ use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Middleware\RouteMiddleware;
 use Psr\Container\ContainerInterface;
-
+use Mezzio\Helper;
 /**
  * Setup middleware pipeline:
  */
@@ -24,6 +24,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // all Exceptions.
     $app->pipe(ErrorHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
+//    $app->pipe(Helper\ContentLengthMiddleware::class);
 
     // Pipe more middleware here that you want to execute on every request:
     // - bootstrapping

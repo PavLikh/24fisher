@@ -23,7 +23,7 @@
 	}
 
 	.query_list	{
-		background-color: yellow;
+		background-color: LightYellow;
 		width: 300px;
 		float: left;
 		padding-right: 10px;
@@ -34,17 +34,12 @@
 		flex-grow: 1;
 	}
 
-	.query_detail {
+	.query_detail_content{
 		flex-grow: 2;
-		/*background-color: blue;*/
-		background-color: yellow;
+		background-color: LightYellow;
 		padding-left: 10px;
 		padding-top: 10px;
 		/*flex-shrink: 0.5;*/
-	}
-
-	.query_detail_content{
-
 	}
 
 	.item {
@@ -72,10 +67,7 @@
 	.active {
 		/*border-top-left-radius: 4px;*/
 		/*border-bottom-right-radius: 35px;*/
-		/*border-left:;*/
 		outline: 2px ridge silver;
-
-		/*box-shadow: -5px 0px 0px 0px black, 5px 0px 0px 10px dimgrey;*/
 		box-shadow: 14px 0px 14px 2px dimgrey;
 	}
 
@@ -116,22 +108,40 @@
 		box-shadow: inset 1px 1px dimgrey;
 	}
 
-	.query_detail_content .headers {
-		background-color: blue;
+	.query_detail_content div {
+		background-color: #CDE6CA;
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
 		overflow: hidden;
 		padding: 5px;
+		margin-bottom: 5px;
 	}
 
-	.query_detail_content .headers th {
-		background-color: maroon;
-		min-width: 100px;
+	.query_detail_content table {
+		width: 100%;
+	}
+
+	.query_detail_content th {
+		width: 200px;
 		height: 30px;
 	}
 
-	.query_detail_content .headers td {
-		background-color: cornsilk;
+	.query_detail_content tr:nth-child(even) th {
+		background-color: #9DB6B4;
+	}
+
+	.query_detail_content tr:nth-child(odd) th {
+		background-color: #f7f7f7;
+	}
+
+	.query_detail_content tr:nth-child(even) td {
+
+		background-color: #C0EAE6;
+	}
+
+	.query_detail_content tr:nth-child(odd) td {
+
+		background-color: #f7fcfb;
 	}
 
 </style>
@@ -154,7 +164,7 @@
 			{% for one_query in query %}
 
 				{% set lastIndex = loop.index0 %}
-				<div class="item" id="{{ one_query['id'] }}" data-index="{{ loop.index0 }}">
+				<div class="item" id="{{ loop.index0 }}" data-index="{{ loop.index0 }}">
 					<div class="user_control"><button onclick="" class="delete">del</button>
 						<p>{{ loop.index0 }}</p>
 						<p>{{ one_query['method'] }}</p>
@@ -173,59 +183,6 @@
 		{% set a = {'s': lastIndex} %}
 		<div class="query_detail">
 			<div class="query_detail_content">
-				<div class="requestDetails">
-					<h4>Request detail</h4>
-					<table>
-						<tr>
-							<th>Method: </th>
-							{% set a1 = 1 %}
-							<td class="test">POST{{ query[0].body }}</td>
-						</tr>
-						<tr>
-							<th>user-agent:</th>
-							<td>{{ query[0].userAgent }}</td>
-						</tr>
-						<tr>
-							<th>host:</th>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Date:</th>
-							<td>{{ query[0].dateTime }}</td>
-						</tr>
-					</table>
-				</div>
-				<div class="headers">
-					<h4>Headers</h4>
-					<table>
-						<tr>
-							<th>Method: </th>
-							{% set a1 = 1 %}
-							<td class="test">POST{{ query[0].body }}</td>
-						</tr>
-						<tr>
-							<th>user-agent:</th>
-							<td>{{ query[0].userAgent }}</td>
-						</tr>
-						<tr>
-							<th>host:</th>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Date:</th>
-							<td>{{ query[0].dateTime }}</td>
-						</tr>
-					</table>
-				</div>
-				<div class="query_body">
-					<h4>Body</h4>
-					<table>
-						<tr>
-							<th>body: </th>
-							<td></td>
-						</tr>
-					</table>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -234,20 +191,15 @@
 
 {% block javascript %}
 <script type="text/javascript">
- 		// $(document).ready(function(){
+
+	$(document).ready(function(){
  		// 	alert(jQuery.fn.jquery);
- 		// });
+		$(".active").removeClass('active');
+		$("#0").addClass('active');
+		$('.query_detail').empty();
+		$("#0").children('.query_detail_content').clone().appendTo('.query_detail');
+	});
 
-{#	{% for i, one_query in query %}#}
-{#		{% for j, value in one_query %}#}
-{#		{% if j == 'id' %}#}
-{#    		array[{{ i }}][{{ j }}] = {{ value|raw }};#}
-{#		{% else %}#}
-{#			array[{{ i }}][{{ j }}] = '{{ value|raw }}';#}
-{#		{% endif %}#}
-
-{#		{% endfor %}#}
-{#	{% endfor %}#}
 	let index = 0;
 	while (index < $('.lastIndex').data('last-index'))
 	{
@@ -260,28 +212,27 @@
 		$(this).addClass('active');
 
 		var id = $(this).attr('id');
-		$(this).append('<b test="">	{% set a1 = 1 %}</b>');
-		$('.test').empty().append("<b>{{ query[a1].id }}</b>");
-		$.ajax({
-    		url: '/query/showone',
-    		method: 'post',
-    		dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
-    		data: {id: id},     /* Параметры передаваемые в запросе. */
-    		success: function(response){
-        		var a = JSON.parse(JSON.stringify(response));
-        		if (a.action) {
-            		alert($(this).data('index'));
-            		console.log(a);
-        		}
-    		}
-		});
+		{#$(this).append('<b test="">	{% set a1 = 1 %}</b>');#}
+		// $.ajax({
+    	// 	url: '/query/showone',
+    	// 	method: 'post',
+    	// 	dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+    	// 	data: {id: id},     /* Параметры передаваемые в запросе. */
+    	// 	success: function(response){
+        // 		var a = JSON.parse(JSON.stringify(response));
+        // 		if (a.action) {
+        //     		// alert($(this).data('index'));
+        //     		console.log(a);
+        // 		}
+    	// 	}
+		// });
 		$('.query_detail').empty();
 		$(this).children('.query_detail_content').clone().appendTo('.query_detail');
 	});
 
 
-	$(".delete").on('click', function(){
-
+	$(".delete").on('click', function(e){
+		e.stopPropagation();
 		var item  = $(this).parent().parent();
 		var id = item.attr('id');
 		$.ajax({

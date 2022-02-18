@@ -14,9 +14,16 @@ class CreateTestTable extends Migration
         $db = $container['db'];
         $db::schema()->create('test', function (Blueprint $table) {
             $table->id();
-            $table->json('body');
+            $table->json('body')->nullable();
             $table->string('method', 50);
             $table->string('userAgent');
+            $table->string('acceptEncoding')->nullable();
+            $table->string('xSignature')->nullable();
+            $table->string('contentType')->nullable();
+            $table->string('connection');
+            $table->string('host');
+            $table->string('queryString')->nullable();
+            $table->string('contentLength')->nullable();
             $table->dateTime('dateTime');
         });
     }

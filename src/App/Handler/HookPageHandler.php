@@ -13,6 +13,8 @@ use App\Model\Test;
 use Illuminate\Database\Eloquent\Collection;
 
 use function time;
+use Mezzio\Helper;
+
 
 class HookPageHandler implements RequestHandlerInterface
 {
@@ -37,28 +39,59 @@ class HookPageHandler implements RequestHandlerInterface
 //        var_dump($request->getHeaderLine('host'));
 //        var_dump($request->getHeaderLine('host1'));
 //        var_dump($request->getHeader(['host', 'accept-encoding']));
-//        echo '<pre>';
+
 //        var_dump($request->getHeaders());
+//        $a = json_encode($request->getHeaders());
+//        var_dump($request->getRequestTarget());
+//        var_dump($request->getUri());
+//        $a = serialize($request->getQueryParams());
+//        var_dump(unserialize($a));
+//        var_dump($request->getQueryParams());
+
+//        var_dump($request->getHeaders());
+//        var_dump($request->getHeader('content-length'));
+//        var_dump($request->getQueryParams());
 //die;
+
 //        var_dump(date('r')); die;
 //        $request->getBody(); die;
 //        var_dump($request->); die;
 
     
-        // echo '</pre>'; die;
-        if ($request->getMethod() == 'GET') {
+
             $query = $request->getQueryParams();
-        } else {
-            $query = $request->getParsedBody();
-        }
-        
-        if (!empty($query)) {
-            $body = json_encode($query);
+            $body = $request->getParsedBody();
+
+        if (!empty($query) || !empty($body)) {
             $test = new Test();
-            $test->setAttribute('body', $body);
+            if (!empty($query)) {
+//                $query = json_encode($query);
+                $query = serialize($query);
+            }
+            if (!empty($body)) {
+                $body = json_encode($body);
+                $test->setAttribute('body', $body);
+            }
+            $test->setAttribute('queryString', $query);
             $test->setAttribute('method', $request->getMethod());
             $test->setAttribute('dateTime', date('Y-m-d H:m:s'));
-            $test->setAttribute('userAgent', $request->getHeaderLine('user-agent') );
+            $test->setAttribute('userAgent', $request->getHeaderLine('user-agent'));
+            $test->setAttribute('acceptEncoding', $request->getHeaderLine('accept-encoding'));
+            $test->setAttribute('connection', $request->getHeaderLine('connection'));
+            $test->setAttribute('host', $request->getHeaderLine('host'));
+            if ($request->getHeaderLine('x-signature')) {
+                $test->setAttribute('xSignature', $request->getHeaderLine('x-signature'));
+            }
+            if ($request->getHeaderLine('content-type')) {
+                $test->setAttribute('contentType', $request->getHeaderLine('content-type'));
+            }
+//            if ($request->getHeaderLine('content-length')) {
+                $test->setAttribute('contentLength', $request->getHeaderLine('content-length'));
+//            }
+            if ($request->getServerParams()["QUERY_STRING"]) {
+                $test->setAttribute('queryString', $request->getServerParams()["QUERY_STRING"]);
+            }
+
             $test->save();
         }
 
