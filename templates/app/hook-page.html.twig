@@ -152,14 +152,6 @@
 	<h1>Hook page</h1>
 	<div class="hook_wraper">
 		<div class="query_list">
-			<div class="item active" id="">
-				<div class="user_control"><button onclick="" class="delete">del</button><p>id: 23</p></div>
-				<div class="request_demo">
-					<h3>Method: POST</h3>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, iusto cum dolores impedit nesciunt, numquam, voluptatem modi maiores nostrum architecto odit consectetur. Ipsum possimus cum quaerat nam dignissimos soluta debitis?
-				</div>
-			</div>
-			{% set lastIndex = 0 %}
 
 			{% for one_query in query %}
 
@@ -180,7 +172,6 @@
 				</div>
 			{% endfor %}
 		</div>
-		{% set a = {'s': lastIndex} %}
 		<div class="query_detail">
 			<div class="query_detail_content">
 			</div>
