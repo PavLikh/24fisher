@@ -1,0 +1,84 @@
+<style>
+</style>
+<div class="query_detail_content">
+    <div class="request_details">
+        <h4>Request detail</h4>
+        <table>
+            <tr>
+                <th>Method: </th>
+                <td>{{ data.method }}</td>
+            </tr>
+            <tr>
+                <th>host:</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Date:</th>
+                <td>{{ data.dateTime }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="headers">
+        <h4>Headers</h4>
+        <table>
+            {% if data.acceptEncoding is defined %}
+            <tr>
+                <th>accept-encoding</th>
+                <td>{{ data.acceptEncoding }}</td>
+            </tr>
+            {% endif %}
+            {% if data.xSignature %}
+            <tr>
+                <th>x-signature</th>
+                <td></td>
+            </tr>
+            {% endif %}
+            {% if data.contentType %}
+            <tr>
+                <th>content-type</th>
+                <td>{{ data.contentType }}</td>
+            </tr>
+            {% endif %}
+            {% if data.contentLength %}
+            <tr>
+                <th>content-length</th>
+                <td>{{ data.contentLength }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>connection</th>
+                <td>{{ data.connection }}</td>
+            </tr>
+            <tr>
+                <th>user-agent</th>
+                <td>{{ data.userAgent }}</td>
+            </tr>
+            <tr>
+                <th>host:</th>
+                <td>{{ data.host }}</td>
+            </tr>
+        </table>
+    </div>
+    {% if data.queryString %}
+    <div class="query_string">
+        <h4>Query string</h4>
+        <table>
+            <tr>
+                <th></th>
+                <td>{{ data.queryString }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+    {% if data.body %}
+    <div class="query_body">
+        <h4>Body</h4>
+        <table>
+            <tr>
+                <th>body: </th>
+                <td>{{ data.body }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+</div>

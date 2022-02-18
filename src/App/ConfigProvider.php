@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace App;
-
+use Mezzio\Helper;
 /**
  * The configuration provider for the App module
  *
@@ -33,6 +33,8 @@ class ConfigProvider
         return [
             'invokables' => [
                 Handler\PingHandler::class => Handler\PingHandler::class,
+                Handler\QueryHandler::class => Handler\QueryHandler::class,
+//                Helper\ContentLengthMiddleware::class => Helper\ContentLengthMiddleware::class,
             ],
             'factories'  => [
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,

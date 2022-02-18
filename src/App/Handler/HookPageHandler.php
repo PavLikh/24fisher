@@ -12,6 +12,10 @@ use Mezzio\Template\TemplateRendererInterface;
 use App\Model\Test;
 use Illuminate\Database\Eloquent\Collection;
 
+use function time;
+use Mezzio\Helper;
+
+
 class HookPageHandler implements RequestHandlerInterface
 {
     /**
@@ -32,53 +36,81 @@ class HookPageHandler implements RequestHandlerInterface
         // getUri()
         // getHeaders()
         // Do some work...
-        // echo '<pre>';
-            // var_dump($request->getMethod());
+//        var_dump($request->getHeaderLine('host'));
+//        var_dump($request->getHeaderLine('host1'));
+//        var_dump($request->getHeader(['host', 'accept-encoding']));
+
+//        var_dump($request->getHeaders());
+//        $a = json_encode($request->getHeaders());
+//        var_dump($request->getRequestTarget());
+//        var_dump($request->getUri());
+//        $a = serialize($request->getQueryParams());
+//        var_dump(unserialize($a));
+//        var_dump($request->getQueryParams());
+
+//        var_dump($request->getHeaders());
+//        var_dump($request->getHeader('content-length'));
+//        var_dump($request->getQueryParams());
+//die;
+
+//        var_dump(date('r')); die;
+//        $request->getBody(); die;
+//        var_dump($request->); die;
 
     
-        // echo '</pre>'; die;
-        if ($request->getMethod() == 'GET') {
+
             $query = $request->getQueryParams();
-        } else {
-            $query = $request->getParsedBody();
-        }
-        
-        if (!empty($query)) {
-            $body = json_encode($query);
+            $body = $request->getParsedBody();
+
+        if (!empty($query) || !empty($body)) {
             $test = new Test();
-            $test->setAttribute('body', $body);
+            if (!empty($query)) {
+//                $query = json_encode($query);
+                $query = serialize($query);
+            }
+            if (!empty($body)) {
+                $body = json_encode($body);
+                $test->setAttribute('body', $body);
+            }
+            $test->setAttribute('queryString', $query);
             $test->setAttribute('method', $request->getMethod());
+            $test->setAttribute('dateTime', date('Y-m-d H:m:s'));
+            $test->setAttribute('userAgent', $request->getHeaderLine('user-agent'));
+            $test->setAttribute('acceptEncoding', $request->getHeaderLine('accept-encoding'));
+            $test->setAttribute('connection', $request->getHeaderLine('connection'));
+            $test->setAttribute('host', $request->getHeaderLine('host'));
+            if ($request->getHeaderLine('x-signature')) {
+                $test->setAttribute('xSignature', $request->getHeaderLine('x-signature'));
+            }
+            if ($request->getHeaderLine('content-type')) {
+                $test->setAttribute('contentType', $request->getHeaderLine('content-type'));
+            }
+//            if ($request->getHeaderLine('content-length')) {
+                $test->setAttribute('contentLength', $request->getHeaderLine('content-length'));
+//            }
+            if ($request->getServerParams()["QUERY_STRING"]) {
+                $test->setAttribute('queryString', $request->getServerParams()["QUERY_STRING"]);
+            }
+
             $test->save();
         }
 
-        // $body = $request->getParsedBody();
-        // $query = $request->getQueryParams();
-        // if (!empty($body)) {
-        //     $body = json_encode($request->getParsedBody());
-        //     $test = new Test();
-        //     $test->setAttribute('body', $body);
-        //     $test->save();   
-        // }else if (!empty($query)) {
-        //     $body = json_encode($request->getQueryParams());
-        //     $test = new Test();
-        //     $test->setAttribute('body', $body);
-        //     $test->save();
-        // }
-
         // $body = Test::query()->pluck('body', 'id')->all(); //
-        $query = Test::select('body', 'method')->orderBy('id', 'DESC')->get()->toArray(); //
+        // $query = Test::select('body', 'method')->orderBy('id', 'DESC')->get()->toArray(); //
+        $query = Test::select()->orderBy('id', 'DESC')->get()->toArray(); //
         // $body = Test::query()->latest()->get()->toArray(); // there is no created_at column in table
         // $query = Test::all('body', 'method')->toArray(); //
         // echo '<pre>';
-        // var_dump($body);
+        // var_dump($query);
         // echo '</pre>'; die;
-        $data['query'] = $query; 
+        $data['query'] = $query;
+        $data['index'] = 0;
         // Render and return a response:
 
         // $data['query'] = json_encode($request->getQueryParams());
         
         return new HtmlResponse($this->renderer->render(
-            'app::hook-page-handler',
+            'app::hook-page',
             //[] // parameters to pass to template
             $data
         ));
