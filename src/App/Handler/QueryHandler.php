@@ -8,7 +8,7 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Model\Test;
+use App\Model\Request;
 
 use function time;
 
@@ -22,6 +22,7 @@ class QueryHandler implements RequestHandlerInterface
     	switch ($action) {
     		case 'delone':
     			$itemId = $request->getParsedBody()['id'];
+//    			$itemId = 37;
     			return new JsonResponse(['action' => $this->deleteOne($itemId)]);
     			break;
             case 'showone':
@@ -40,8 +41,8 @@ class QueryHandler implements RequestHandlerInterface
     private function deleteOne($itemId)
     {
     	$result = false;
-    	if(Test::query()->where("id","=", $itemId)->exists()) {
-    		$result = Test::query()->where("id","=", $itemId)->first()->delete();
+    	if(Request::query()->where("id","=", $itemId)->exists()) {
+    		$result = Request::query()->where("id","=", $itemId)->first()->delete();
     	}
     	return $result;
     }
@@ -49,8 +50,8 @@ class QueryHandler implements RequestHandlerInterface
     private function getOne($itemId)
     {
         $result = false;
-        if(Test::query()->where("id","=", $itemId)->exists()) {
-            $result = Test::query()->where("id","=", $itemId)->first();
+        if(Request::query()->where("id","=", $itemId)->exists()) {
+            $result = Request::query()->where("id","=", $itemId)->first();
         }
         return $result;
     }

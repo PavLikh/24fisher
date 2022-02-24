@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
-use App\Model\Test;
+use App\Model\Request;
 use Illuminate\Database\Eloquent\Collection;
 
 use function time;
@@ -32,6 +32,9 @@ class HookPageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
+//        $a = new Asd();
+
+//        var_dump($a->count()); die; //
         //getMethod() // GET, POST ...
         // getUri()
         // getHeaders()
@@ -39,18 +42,15 @@ class HookPageHandler implements RequestHandlerInterface
 //        var_dump($request->getHeaderLine('host'));
 //        var_dump($request->getHeaderLine('host1'));
 //        var_dump($request->getHeader(['host', 'accept-encoding']));
-
-//        var_dump($request->getHeaders());
-//        $a = json_encode($request->getHeaders());
+//        $age = '36';
+//        setcookie("age", $age, time() + 3600);
+//        var_dump($request->getCookieParams());
+//        $request->
 //        var_dump($request->getRequestTarget());
-//        var_dump($request->getUri());
+//        var_dump($request->getUri()); // /hook
 //        $a = serialize($request->getQueryParams());
 //        var_dump(unserialize($a));
-//        var_dump($request->getQueryParams());
 
-//        var_dump($request->getHeaders());
-//        var_dump($request->getHeader('content-length'));
-//        var_dump($request->getQueryParams());
 //die;
 
 //        var_dump(date('r')); die;
@@ -63,43 +63,44 @@ class HookPageHandler implements RequestHandlerInterface
             $body = $request->getParsedBody();
 
         if (!empty($query) || !empty($body)) {
-            $test = new Test();
+            $requestTable = new Request();
             if (!empty($query)) {
 //                $query = json_encode($query);
                 $query = serialize($query);
             }
             if (!empty($body)) {
                 $body = json_encode($body);
-                $test->setAttribute('body', $body);
+                $requestTable->setAttribute('body', $body);
             }
-            $test->setAttribute('queryString', $query);
-            $test->setAttribute('method', $request->getMethod());
-            $test->setAttribute('dateTime', date('Y-m-d H:m:s'));
-            $test->setAttribute('userAgent', $request->getHeaderLine('user-agent'));
-            $test->setAttribute('acceptEncoding', $request->getHeaderLine('accept-encoding'));
-            $test->setAttribute('connection', $request->getHeaderLine('connection'));
-            $test->setAttribute('host', $request->getHeaderLine('host'));
+            $requestTable->setAttribute('queryString', $query);
+            $requestTable->setAttribute('method', $request->getMethod());
+            $requestTable->setAttribute('dateTime', date('Y-m-d H:m:s'));
+            $requestTable->setAttribute('userAgent', $request->getHeaderLine('user-agent'));
+            $requestTable->setAttribute('acceptEncoding', $request->getHeaderLine('accept-encoding'));
+            $requestTable->setAttribute('connection', $request->getHeaderLine('connection'));
+            $requestTable->setAttribute('host', $request->getHeaderLine('host'));
             if ($request->getHeaderLine('x-signature')) {
-                $test->setAttribute('xSignature', $request->getHeaderLine('x-signature'));
+                $requestTable->setAttribute('xSignature', $request->getHeaderLine('x-signature'));
             }
             if ($request->getHeaderLine('content-type')) {
-                $test->setAttribute('contentType', $request->getHeaderLine('content-type'));
+                $requestTable->setAttribute('contentType', $request->getHeaderLine('content-type'));
             }
 //            if ($request->getHeaderLine('content-length')) {
-                $test->setAttribute('contentLength', $request->getHeaderLine('content-length'));
+                $requestTable->setAttribute('contentLength', $request->getHeaderLine('content-length'));
 //            }
             if ($request->getServerParams()["QUERY_STRING"]) {
-                $test->setAttribute('queryString', $request->getServerParams()["QUERY_STRING"]);
+                $requestTable->setAttribute('queryString', $request->getServerParams()["QUERY_STRING"]);
             }
 
-            $test->save();
+            $requestTable->save();
         }
 
-        // $body = Test::query()->pluck('body', 'id')->all(); //
-        // $query = Test::select('body', 'method')->orderBy('id', 'DESC')->get()->toArray(); //
-        $query = Test::select()->orderBy('id', 'DESC')->get()->toArray(); //
-        // $body = Test::query()->latest()->get()->toArray(); // there is no created_at column in table
-        // $query = Test::all('body', 'method')->toArray(); //
+        // $body = Request::query()->pluck('body', 'id')->all(); //
+        // $query = Request::select('body', 'method')->orderBy('id', 'DESC')->get()->toArray(); //
+
+        $query = Request::select()->orderBy('id', 'DESC')->get()->toArray(); //
+        // $body = Request::query()->latest()->get()->toArray(); // there is no created_at column in table
+        // $query = Request::all('body', 'method')->toArray(); //
         // echo '<pre>';
         // var_dump($query);
         // echo '</pre>'; die;
