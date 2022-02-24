@@ -156,7 +156,7 @@
 			{% for one_query in query %}
 
 				{% set lastIndex = loop.index0 %}
-				<div class="item" id="{{ loop.index0 }}" data-index="{{ loop.index0 }}">
+				<div class="item" id="{{ one_query['id'] }}" data-current="{{ loop.index0 }}">
 					<div class="user_control"><button onclick="" class="delete">del</button>
 						<p>{{ loop.index0 }}</p>
 						<p>{{ one_query['method'] }}</p>
@@ -185,24 +185,26 @@
 
 	$(document).ready(function(){
  		// 	alert(jQuery.fn.jquery);
+		var current_index = 1;
 		$(".active").removeClass('active');
-		$("#0").addClass('active');
+		var current_item = $('.item').attr('data-current', current_index);
+		current_item.addClass('active');
+		// $("#0").addClass('active');
 		$('.query_detail').empty();
-		$("#0").children('.query_detail_content').clone().appendTo('.query_detail');
+		// $("#0").children('.query_detail_content').clone().appendTo('.query_detail');
+		current_item.children('.query_detail_content').clone().appendTo('.query_detail');
 	});
 
-	let index = 0;
-	while (index < $('.lastIndex').data('last-index'))
-	{
-    	console.log(index);
-    	index++;
-	}
+
+	// $.cookie("visits", 10, { expires : 10 });
+	// console.log($.cookie("visits", 10));
+
 	// $(".item").data(index);
 	$(".item").on('click', function() {
 		$(".active").removeClass('active');
 		$(this).addClass('active');
 
-		var id = $(this).attr('id');
+		// var id = $(this).attr('id');
 		{#$(this).append('<b test="">	{% set a1 = 1 %}</b>');#}
 		// $.ajax({
     	// 	url: '/query/showone',
@@ -226,6 +228,8 @@
 		e.stopPropagation();
 		var item  = $(this).parent().parent();
 		var id = item.attr('id');
+		// var id = item.data('index');
+		console.log(id);
 		$.ajax({
 			url: '/query/delone',         /* Куда пойдет запрос */
 			method: 'post',             /* Метод передачи (post или get) */
@@ -236,6 +240,8 @@
 				if (a.action) {
    					item.remove();
     				console.log(a);
+				}else{
+					console.log('ERROR');
 				}
 			}
 		});

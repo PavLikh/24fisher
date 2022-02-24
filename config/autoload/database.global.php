@@ -21,4 +21,14 @@ return [
         'collation' => getenv('MYSQL_COLLATION') ?: 'utf8_unicode_ci',
         'prefix' => '',
     ],
+    'database-eloquent' => [
+        'driver' => '',
+        'username' => '',
+        'password' => '',
+        'host' => '',
+        'database' => '',
+        'charset' => '',
+        'collation' => '',
+        'prefix' => '',
+    ],
 ];

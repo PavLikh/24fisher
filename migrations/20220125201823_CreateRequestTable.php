@@ -3,7 +3,7 @@
 use Phpmig\Migration\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTestTable extends Migration
+class CreateRequestTable extends Migration
 {
     /**
      * Do the migration
@@ -12,7 +12,7 @@ class CreateTestTable extends Migration
     {
         $container = $this->getContainer();
         $db = $container['db'];
-        $db::schema()->create('test', function (Blueprint $table) {
+        $db::schema()->create('request', function (Blueprint $table) {
             $table->id();
             $table->json('body')->nullable();
             $table->string('method', 50);
@@ -35,6 +35,6 @@ class CreateTestTable extends Migration
     {
         $container = $this->getContainer();
         $db = $container['db'];
-        $db::schema()->dropIfExists('test');
+        $db::schema()->dropIfExists('request');
     }
 }
